@@ -5,8 +5,13 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="questionReaderService"
-          class="ru.otus.homework.service.QuestionReaderService">
-        <constructor-arg index="0" value="C:\Users\User\IdeaProjects\homework1\src\main\resources\data\testQuestionsWithAnswers.csv"/>
+          class="ru.otus.homework.service.QuestionReaderServiceImpl">
+        <constructor-arg index="0" value="classpath:data/testQuestionsWithAnswers.csv"/>
+    </bean>
+
+    <bean id="appStartService"
+          class="ru.otus.homework.service.AppStartServiceImpl">
+        <constructor-arg index="0" ref="questionReaderService"/>
     </bean>
 
 </beans>

@@ -2,23 +2,23 @@ package ru.otus.homework.service;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class QuestionReaderServiceTest {
-    private static QuestionReaderService questionReaderService;
+    private static QuestionReaderServiceImpl questionReaderServiceImpl;
 
     @BeforeAll
-    static void setUp(){
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        questionReaderService = context.getBean(QuestionReaderService.class);
+    static void setUp() {
+        questionReaderServiceImpl = new QuestionReaderServiceImpl(
+                new FileSystemResource("src/test/resources/testQuestionsWithAnswers.csv")
+        );
     }
 
     @Test
     void testGetQuestionsBySize() {
-        final int actual = questionReaderService.getQuestions().size();
+        final int actual = questionReaderServiceImpl.getQuestions().size();
 
         assertEquals(5, actual);
     }
