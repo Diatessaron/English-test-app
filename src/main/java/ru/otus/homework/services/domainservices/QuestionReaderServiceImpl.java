@@ -1,12 +1,13 @@
-package ru.otus.homework.service;
+package ru.otus.homework.services.domainservices;
 
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.exceptions.QuestionReaderException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
