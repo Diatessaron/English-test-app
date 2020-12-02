@@ -13,6 +13,18 @@ public class Question {
         this.answerList = answerList;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public List<Answer> getAnswerList() {
+        return answerList;
+    }
+
     @Override
     public String toString() {
         StringBuilder answersInLine = new StringBuilder();

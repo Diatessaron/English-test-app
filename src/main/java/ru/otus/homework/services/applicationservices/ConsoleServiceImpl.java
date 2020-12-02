@@ -1,26 +1,33 @@
 package ru.otus.homework.services.applicationservices;
 
-import ru.otus.homework.exceptions.QuestionReaderException;
+import ru.otus.homework.exceptions.ConsoleServiceException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Optional;
+import java.io.*;
 
 public class ConsoleServiceImpl implements ConsoleService{
-    @Override
-    public void print(String str) {
-        System.out.println(str);
+    private final BufferedReader reader;
+    private final InputStream in;
+    private final PrintStream out;
+
+    public ConsoleServiceImpl(InputStream in, PrintStream out) {
+        this.in = in;
+        this.out = out;
+        reader = new BufferedReader(new InputStreamReader(this.in));
     }
 
     @Override
-    public Optional<String> read() {
-        Optional<String> result;
+    public void print(String str) {
+        out.println(str);
+    }
 
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
-            result = Optional.of(reader.readLine());
+    @Override
+    public String read() {
+        String result;
+
+        try{
+            result = reader.readLine();
         } catch (IOException e){
-            throw new QuestionReaderException(e.toString(), e);
+            throw new ConsoleServiceException(e.toString(), e);
         }
 
         return result;

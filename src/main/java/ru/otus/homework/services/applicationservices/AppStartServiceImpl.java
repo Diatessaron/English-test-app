@@ -1,23 +1,18 @@
 package ru.otus.homework.services.applicationservices;
 
-import ru.otus.homework.services.domainservices.QuestionReaderService;
+import org.springframework.stereotype.Service;
+import ru.otus.homework.services.domainservices.StudentTestService;
 
+@Service
 public class AppStartServiceImpl implements AppStartService {
-    private final QuestionReaderService questionReader;
-    private final ConsoleService consoleService;
+    private final StudentTestService studentTestService;
 
-    public AppStartServiceImpl(QuestionReaderService questionReader, ConsoleService consoleService) {
-        this.questionReader = questionReader;
-        this.consoleService = consoleService;
+    public AppStartServiceImpl(StudentTestService studentTestService) {
+        this.studentTestService = studentTestService;
     }
 
     @Override
     public void start() {
-        testStudent();
-    }
-
-    private void testStudent(){
-        consoleService.print("Hello. You will get questions with answers. English test starts");
-        questionReader.getQuestions().forEach(question -> consoleService.print(question.toString()));
+        studentTestService.testStudent();
     }
 }
