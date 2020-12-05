@@ -1,5 +1,7 @@
 package ru.otus.homework.services.domainservices;
 
+import ru.otus.homework.domain.StudentProfile;
+
 public interface StudentTestService {
-    void testStudent();
+    StudentProfile testStudent();
 }

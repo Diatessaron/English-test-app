@@ -1,6 +1,6 @@
 package ru.otus.homework.services.applicationservices;
 
-public interface ConsoleService {
+public interface InputOutputService {
     void print(String str);
 
     String read();
