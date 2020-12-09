@@ -1,7 +1,7 @@
 package ru.otus.homework.exceptions;
 
-public class QuestionReaderException extends RuntimeException{
-    public QuestionReaderException(String message){
+public class QuestionReaderException extends RuntimeException {
+    public QuestionReaderException(String message) {
         super(message);
     }
 
