@@ -20,22 +20,21 @@ public class StudentProfilePrintServiceImpl implements StudentProfilePrintServic
         final List<Question> failedQuestions = studentProfile.getFailedQuestions();
 
         if (studentProfile.isPassed())
-            inputOutputService.print(String.format("Congratulations, %s %s! You have passed the test.",
-                    studentProfile.getFirstname(), studentProfile.getLastname()));
-        else {
-            inputOutputService.print(String.format("Unfortunately, %s %s, you failed the test." +
+            inputOutputService.print("Congratulations, %s %s! You have passed the test.",
+                    studentProfile.getFirstname(), studentProfile.getLastname());
+        else
+            inputOutputService.print("Unfortunately, %s %s, you failed the test." +
                             " You have %d incorrect answers.",
-                    studentProfile.getFirstname(), studentProfile.getLastname(), failedQuestions.size()));
-        }
+                    studentProfile.getFirstname(), studentProfile.getLastname(), failedQuestions.size());
+
 
         if (!failedQuestions.isEmpty()) {
             inputOutputService.print("You have some mistakes. Here are they: ");
-            for (int i = 0; i < failedQuestions.size(); i++) {
-                final Question question = failedQuestions.get(i);
-                inputOutputService.print(String.format("Question %d:\n%s\nThe correct answer is \"%s\"\n" +
+            for (final Question question : failedQuestions) {
+                inputOutputService.print("Question %d:\n%s\nThe correct answer is \"%s\"\n" +
                                 "But your answer was: \"%s\"\n",
                         question.getId(), question.getContent(), question.getCorrectAnswer(),
-                        studentProfile.getGivenAnswers().get(i).toString()));
+                        studentProfile.getGivenAnswers().get(question.getId() - 1).toString());
             }
         }
     }

@@ -19,6 +19,11 @@ public class ConsoleInputOutputServiceImpl implements InputOutputService {
     }
 
     @Override
+    public void print(String str, Object ... objects){
+        out.printf((str) + "%n", objects);
+    }
+
+    @Override
     public String read() {
         return reader.nextLine();
     }

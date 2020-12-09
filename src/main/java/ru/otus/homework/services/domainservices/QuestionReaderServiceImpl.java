@@ -2,6 +2,7 @@ package ru.otus.homework.services.domainservices;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.exceptions.QuestionReaderException;
@@ -14,10 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class QuestionReaderServiceImpl implements QuestionReaderService {
     private final Resource resource;
 
-    public QuestionReaderServiceImpl(Resource resource) {
+    public QuestionReaderServiceImpl(@Value("${application.testQuestionsWithAnswers}") Resource resource) {
         this.resource = resource;
     }
 

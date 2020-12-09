@@ -67,8 +67,8 @@ public class StudentTestServiceImpl implements StudentTestService {
     }
 
     private void beginTest() {
-        inputOutputService.print(String.format("You will get questions with answers." +
+        inputOutputService.print("You will get questions with answers." +
                 " You have to print answer in the console. At least, %d answers should be correct\n" +
-                "English test starts", rightAnswerCount));
+                "English test starts", rightAnswerCount);
     }
 }
