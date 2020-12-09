@@ -1,4 +1,4 @@
-package ru.otus.homework.services.applicationservices;
+package ru.otus.homework.services.domainservices;
 
 public interface InputOutputService {
     void print(String str);

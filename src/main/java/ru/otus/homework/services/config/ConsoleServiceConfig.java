@@ -2,8 +2,8 @@ package ru.otus.homework.services.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.otus.homework.services.applicationservices.InputOutputService;
-import ru.otus.homework.services.applicationservices.ConsoleInputOutputServiceImpl;
+import ru.otus.homework.services.domainservices.ConsoleInputOutputServiceImpl;
+import ru.otus.homework.services.domainservices.InputOutputService;
 
 @Configuration
 public class ConsoleServiceConfig {

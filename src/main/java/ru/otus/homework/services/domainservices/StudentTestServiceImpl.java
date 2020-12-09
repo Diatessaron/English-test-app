@@ -1,9 +1,10 @@
 package ru.otus.homework.services.domainservices;
 
+import org.springframework.context.MessageSource;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.applicationservices.InputOutputService;
+import ru.otus.homework.services.config.AppProps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +13,18 @@ public class StudentTestServiceImpl implements StudentTestService {
     private final QuestionReaderService questionReaderService;
     private final InputOutputService inputOutputService;
     private final int rightAnswerCount;
+    private final MessageSource messageSource;
+    private final AppProps appProps;
 
     public StudentTestServiceImpl(QuestionReaderService questionReaderService,
                                   InputOutputService inputOutputService,
-                                  int rightAnswerCount) {
+                                  int rightAnswerCount, MessageSource messageSource,
+                                  AppProps appProps) {
         this.questionReaderService = questionReaderService;
         this.inputOutputService = inputOutputService;
         this.rightAnswerCount = rightAnswerCount;
+        this.messageSource = messageSource;
+        this.appProps = appProps;
     }
 
     @Override
@@ -58,17 +64,16 @@ public class StudentTestServiceImpl implements StudentTestService {
     }
 
     private StudentProfile getStudentData() {
-        inputOutputService.print("Hello! Please, enter your first name: ");
+        inputOutputService.print(messageSource.getMessage("firstname", null, appProps.getLocale()));
         final String firstname = inputOutputService.read();
-        inputOutputService.print("Please, enter your last name: ");
+        inputOutputService.print(messageSource.getMessage("lastname", null, appProps.getLocale()));
         final String lastname = inputOutputService.read();
 
         return new StudentProfile(firstname, lastname);
     }
 
     private void beginTest() {
-        inputOutputService.print("You will get questions with answers." +
-                " You have to print answer in the console. At least, %d answers should be correct\n" +
-                "English test starts", rightAnswerCount);
+        inputOutputService.print(messageSource.getMessage("beginTest",
+                new Object[] {rightAnswerCount}, appProps.getLocale()));
     }
 }

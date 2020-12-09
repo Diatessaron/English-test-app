@@ -1,0 +1,9 @@
+spring:
+  banner:
+    location: classpath:resources/banner.txt
+  messages:
+    basename: resources.lang.labels_en
+application:
+  rightAnswerCount: 3
+  testQuestionsWithAnswers: classpath:data/testQuestionsWithAnswers.csv
+  locale: en

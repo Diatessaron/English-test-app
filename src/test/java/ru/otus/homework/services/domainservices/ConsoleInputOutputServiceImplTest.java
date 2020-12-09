@@ -1,4 +1,4 @@
-package ru.otus.homework.services.applicationservices;
+package ru.otus.homework.services.domainservices;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

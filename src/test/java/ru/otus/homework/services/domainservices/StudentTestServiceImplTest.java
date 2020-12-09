@@ -6,13 +6,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.applicationservices.InputOutputService;
+import ru.otus.homework.services.config.AppProps;
+import ru.otus.homework.services.domainservices.InputOutputService;
+import ru.otus.homework.services.domainservices.QuestionReaderService;
+import ru.otus.homework.services.domainservices.StudentTestService;
+import ru.otus.homework.services.domainservices.StudentTestServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -30,8 +36,15 @@ class StudentTestServiceImplTest {
 
     @BeforeEach
     void setUp() {
+        final ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+        source.setBasenames("resources/lang/labels");
+        source.setUseCodeAsDefaultMessage(true);
+
+        AppProps appProps = new AppProps();
+        appProps.setLocale(Locale.US);
+
         studentTestService = new StudentTestServiceImpl(questionReaderService, inputOutputService,
-                RIGHT_ANSWER_COUNT);
+                RIGHT_ANSWER_COUNT, source, appProps);
 
         questionList = new ArrayList<>();
 
