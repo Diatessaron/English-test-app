@@ -7,8 +7,6 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.applicationservices.AppStartService;
-import ru.otus.homework.services.applicationservices.AppStartServiceImpl;
 import ru.otus.homework.services.domainservices.StudentProfilePrintService;
 import ru.otus.homework.services.domainservices.StudentTestService;
 

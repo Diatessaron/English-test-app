@@ -1,4 +1,4 @@
-package ru.otus.homework.services.domainservices;
+package ru.otus.homework.services.domainservices.utility;
 
 import java.io.InputStream;
 import java.io.PrintStream;

@@ -11,10 +11,8 @@ import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
 import ru.otus.homework.services.config.AppProps;
-import ru.otus.homework.services.domainservices.InputOutputService;
-import ru.otus.homework.services.domainservices.QuestionReaderService;
-import ru.otus.homework.services.domainservices.StudentTestService;
-import ru.otus.homework.services.domainservices.StudentTestServiceImpl;
+import ru.otus.homework.services.domainservices.utility.InputOutputService;
+import ru.otus.homework.services.domainservices.utility.LocalizationPrintService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +27,8 @@ class StudentTestServiceImplTest {
     private InputOutputService inputOutputService;
     @Mock
     private QuestionReaderService questionReaderService;
+    @Mock
+    private LocalizationPrintService localizationPrintService;
 
     private StudentTestService studentTestService;
     private List<Question> questionList;
@@ -44,7 +44,7 @@ class StudentTestServiceImplTest {
         appProps.setLocale(Locale.US);
 
         studentTestService = new StudentTestServiceImpl(questionReaderService, inputOutputService,
-                RIGHT_ANSWER_COUNT, source, appProps);
+                RIGHT_ANSWER_COUNT, localizationPrintService);
 
         questionList = new ArrayList<>();
 
@@ -70,6 +70,7 @@ class StudentTestServiceImplTest {
                 ), new Answer("doesn't"))
         );
 
+        doNothing().when(localizationPrintService).printMessage(any(), any());
         when(questionReaderService.getQuestions()).thenReturn(questionList);
         when(inputOutputService.read()).thenReturn("Firstname", "Lastname", "your", "from", "very", "Have you got", "doesn't");
     }
@@ -78,13 +79,13 @@ class StudentTestServiceImplTest {
     void testByOrderOfMocksMethodsInvocation() {
         studentTestService.testStudent();
 
-        final InOrder inOrder = inOrder(inputOutputService, questionReaderService);
+        final InOrder inOrder = inOrder(inputOutputService, questionReaderService, localizationPrintService);
 
         for (int i = 0; i < 2; i++) {
-            inOrder.verify(inputOutputService).print(anyString());
+            inOrder.verify(localizationPrintService).printMessage(anyString());
             inOrder.verify(inputOutputService).read();
         }
-        inOrder.verify(inputOutputService).print(anyString());
+        inOrder.verify(localizationPrintService).printMessage(anyString(), anyInt());
 
         inOrder.verify(questionReaderService).getQuestions();
 

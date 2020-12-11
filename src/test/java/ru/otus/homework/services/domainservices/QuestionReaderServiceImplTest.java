@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
+import ru.otus.homework.services.config.AppProps;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,9 +20,11 @@ class QuestionReaderServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        questionReaderServiceImpl = new QuestionReaderServiceImpl(
-                new ClassPathResource("testQuestionsWithAnswers.csv")
-        );
+        final AppProps appProps = new AppProps();
+        appProps.setLocale(new Locale("en"));
+        appProps.setEnResource(new ClassPathResource("testQuestionsWithAnswers.csv"));
+
+        questionReaderServiceImpl = new QuestionReaderServiceImpl(appProps);
 
         questionList = List.of(
                 new Question(1, "What's .... name?", List.of(

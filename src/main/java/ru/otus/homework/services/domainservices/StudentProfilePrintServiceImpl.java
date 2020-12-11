@@ -1,24 +1,18 @@
 package ru.otus.homework.services.domainservices;
 
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.config.AppProps;
+import ru.otus.homework.services.domainservices.utility.LocalizationPrintService;
 
 import java.util.List;
 
 @Service
 public class StudentProfilePrintServiceImpl implements StudentProfilePrintService {
-    private final InputOutputService inputOutputService;
-    private final MessageSource messageSource;
-    private final AppProps appProps;
+    private final LocalizationPrintService localizationPrintService;
 
-    public StudentProfilePrintServiceImpl(InputOutputService inputOutputService, MessageSource messageSource,
-                                          AppProps appProps) {
-        this.inputOutputService = inputOutputService;
-        this.messageSource = messageSource;
-        this.appProps = appProps;
+    public StudentProfilePrintServiceImpl(LocalizationPrintService localizationPrintService) {
+        this.localizationPrintService = localizationPrintService;
     }
 
     @Override
@@ -26,18 +20,18 @@ public class StudentProfilePrintServiceImpl implements StudentProfilePrintServic
         final List<Question> failedQuestions = studentProfile.getFailedQuestions();
 
         if (studentProfile.isPassed())
-            inputOutputService.print(messageSource.getMessage("test.passed",
-                    new Object[]{studentProfile.getFirstname(), studentProfile.getLastname()}, appProps.getLocale()));
+            localizationPrintService.printMessage("test.passed",
+                    studentProfile.getFirstname(), studentProfile.getLastname());
         else
-            inputOutputService.print(messageSource.getMessage("test.failed", new Object[]
-                    {studentProfile.getFirstname(), studentProfile.getLastname(), failedQuestions.size()}, appProps.getLocale()));
+            localizationPrintService.printMessage("test.failed", studentProfile.getFirstname(),
+                    studentProfile.getLastname(), failedQuestions.size());
 
         if (!failedQuestions.isEmpty()) {
-            inputOutputService.print(messageSource.getMessage("test.mistakes", null, appProps.getLocale()));
+            localizationPrintService.printMessage("test.mistakes");
             for (final Question question : failedQuestions) {
-                inputOutputService.print(messageSource.getMessage("test.failedQuestion", new Object[]
-                        {question.getId(), question.getContent(), question.getCorrectAnswer(),
-                                studentProfile.getGivenAnswers().get(question.getId() - 1).toString()}, appProps.getLocale()));
+                localizationPrintService.printMessage("test.failedQuestion", question.getId(),
+                        question.getContent(), question.getCorrectAnswer(), studentProfile.getGivenAnswers()
+                                .get(question.getId() - 1).toString());
             }
         }
     }

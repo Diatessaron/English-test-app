@@ -9,10 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import ru.otus.homework.domain.StudentProfile;
 import ru.otus.homework.services.config.AppProps;
+import ru.otus.homework.services.domainservices.utility.*;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -21,6 +21,8 @@ class StudentProfilePrintServiceImplTest {
     @Mock
     private InputOutputService inputOutputService;
 
+    private LocalizationPrintService localizationPrintService;
+    private LocalizationService localizationService;
     private final MessageSource messageSource;
     private final AppProps appProps;
     private StudentProfilePrintServiceImpl studentProfilePrintService;
@@ -34,7 +36,10 @@ class StudentProfilePrintServiceImplTest {
     @BeforeEach
     void setUp() {
         doNothing().when(inputOutputService).print(any());
-        studentProfilePrintService = new StudentProfilePrintServiceImpl(inputOutputService, messageSource, appProps);
+
+        localizationService = new LocalizationServiceImpl(messageSource, appProps);
+        localizationPrintService = new LocalizationPrintServiceImpl(inputOutputService, localizationService);
+        studentProfilePrintService = new StudentProfilePrintServiceImpl(localizationPrintService);
     }
 
     @Test

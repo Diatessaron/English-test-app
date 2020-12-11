@@ -2,8 +2,9 @@ spring:
   banner:
     location: classpath:resources/banner.txt
   messages:
-    basename: resources.lang.labels_en
+    basename: resources.lang.labels
 application:
   rightAnswerCount: 3
-  testQuestionsWithAnswers: classpath:data/testQuestionsWithAnswers.csv
+  enResource: classpath:data/enTestQuestionsWithAnswers.csv
+  ruResource: classpath:data/ruTestQuestionsWithAnswers.csv
   locale: en

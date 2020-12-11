@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import ru.otus.homework.services.applicationservices.AppStartService;
-import ru.otus.homework.services.applicationservices.AppStartServiceImpl;
 import ru.otus.homework.services.config.AppProps;
 
 @SpringBootApplication
@@ -14,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         final ApplicationContext context = SpringApplication.run(Main.class, args);
 
-        AppStartService appStartService = context.getBean(AppStartServiceImpl.class);
+        AppStartService appStartService = context.getBean(AppStartService.class);
         appStartService.start();
     }
 }

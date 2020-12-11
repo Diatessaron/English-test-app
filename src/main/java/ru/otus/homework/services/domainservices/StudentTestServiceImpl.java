@@ -1,10 +1,10 @@
 package ru.otus.homework.services.domainservices;
 
-import org.springframework.context.MessageSource;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.config.AppProps;
+import ru.otus.homework.services.domainservices.utility.InputOutputService;
+import ru.otus.homework.services.domainservices.utility.LocalizationPrintService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +13,14 @@ public class StudentTestServiceImpl implements StudentTestService {
     private final QuestionReaderService questionReaderService;
     private final InputOutputService inputOutputService;
     private final int rightAnswerCount;
-    private final MessageSource messageSource;
-    private final AppProps appProps;
+    private final LocalizationPrintService localizationPrintService;
 
-    public StudentTestServiceImpl(QuestionReaderService questionReaderService,
-                                  InputOutputService inputOutputService,
-                                  int rightAnswerCount, MessageSource messageSource,
-                                  AppProps appProps) {
+    public StudentTestServiceImpl(QuestionReaderService questionReaderService, InputOutputService inputOutputService,
+                                  int rightAnswerCount, LocalizationPrintService localizationPrintService) {
         this.questionReaderService = questionReaderService;
         this.inputOutputService = inputOutputService;
         this.rightAnswerCount = rightAnswerCount;
-        this.messageSource = messageSource;
-        this.appProps = appProps;
+        this.localizationPrintService = localizationPrintService;
     }
 
     @Override
@@ -38,6 +34,7 @@ public class StudentTestServiceImpl implements StudentTestService {
         for (Question question : questions) {
             inputOutputService.print(question.toString());
             givenAnswers.add(new Answer(inputOutputService.read()));
+
         }
 
         final List<Question> failedQuestions = checkAnswers(givenAnswers, questions);
@@ -64,16 +61,15 @@ public class StudentTestServiceImpl implements StudentTestService {
     }
 
     private StudentProfile getStudentData() {
-        inputOutputService.print(messageSource.getMessage("firstname", null, appProps.getLocale()));
+        localizationPrintService.printMessage("firstname");
         final String firstname = inputOutputService.read();
-        inputOutputService.print(messageSource.getMessage("lastname", null, appProps.getLocale()));
+        localizationPrintService.printMessage("lastname");
         final String lastname = inputOutputService.read();
 
         return new StudentProfile(firstname, lastname);
     }
 
     private void beginTest() {
-        inputOutputService.print(messageSource.getMessage("beginTest",
-                new Object[] {rightAnswerCount}, appProps.getLocale()));
+        localizationPrintService.printMessage("beginTest", rightAnswerCount);
     }
 }
