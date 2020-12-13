@@ -4,7 +4,6 @@ spring:
   messages:
     basename: resources.lang.labels
 application:
+  template: data/%sTestQuestionsWithAnswers.csv
   rightAnswerCount: 3
-  enResource: classpath:data/enTestQuestionsWithAnswers.csv
-  ruResource: classpath:data/ruTestQuestionsWithAnswers.csv
   locale: en

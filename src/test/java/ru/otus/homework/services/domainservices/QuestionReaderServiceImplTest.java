@@ -2,7 +2,6 @@ package ru.otus.homework.services.domainservices;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.services.config.AppProps;
@@ -22,7 +21,7 @@ class QuestionReaderServiceImplTest {
     void setUp() {
         final AppProps appProps = new AppProps();
         appProps.setLocale(new Locale("en"));
-        appProps.setEnResource(new ClassPathResource("testQuestionsWithAnswers.csv"));
+        appProps.setTemplate("%sTestQuestionsWithAnswers.csv");
 
         questionReaderServiceImpl = new QuestionReaderServiceImpl(appProps);
 

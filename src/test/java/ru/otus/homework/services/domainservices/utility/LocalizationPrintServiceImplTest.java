@@ -20,16 +20,12 @@ class LocalizationPrintServiceImplTest {
     @Mock
     private InputOutputService inputOutputService;
 
+    @Autowired
     private MessageSource messageSource;
+    @Autowired
     private AppProps appProps;
     private LocalizationService localizationService;
     private LocalizationPrintServiceImpl localizationPrintService;
-
-    @Autowired
-    public LocalizationPrintServiceImplTest(MessageSource messageSource, AppProps appProps) {
-        this.messageSource = messageSource;
-        this.appProps = appProps;
-    }
 
     @BeforeEach
     void setUp() {

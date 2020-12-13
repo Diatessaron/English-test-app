@@ -12,7 +12,6 @@ import ru.otus.homework.services.domainservices.StudentTestService;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,10 +23,11 @@ class AppStartServiceImplTest {
     private StudentProfilePrintService studentProfilePrintService;
 
     private AppStartService appStartService;
+    private StudentProfile studentProfile;
 
     @BeforeEach
     void setUp(){
-        final StudentProfile studentProfile = new StudentProfile("firstname", "lastname");
+        studentProfile = new StudentProfile("firstname", "lastname");
         studentProfile.setPassed(true);
         studentProfile.setFailedQuestions(new ArrayList<>());
         studentProfile.setGivenAnswers(new ArrayList<>());
@@ -44,6 +44,6 @@ class AppStartServiceImplTest {
 
         final InOrder inOrder = inOrder(studentTestService, studentProfilePrintService);
         inOrder.verify(studentTestService).testStudent();
-        inOrder.verify(studentProfilePrintService).printStudentResult(any());
+        inOrder.verify(studentProfilePrintService).printStudentResult(studentProfile);
     }
 }

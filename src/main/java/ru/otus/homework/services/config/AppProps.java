@@ -1,6 +1,7 @@
 package ru.otus.homework.services.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.util.Locale;
@@ -9,8 +10,15 @@ import java.util.Locale;
 public class AppProps {
     private Locale locale;
     private int rightAnswerCount;
-    private Resource enResource;
-    private Resource ruResource;
+    private Resource resource;
+
+    public void setTemplate(String template) {
+        this.resource = new ClassPathResource(String.format(template, locale.getLanguage()));
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
 
     public Locale getLocale() {
         return locale;
@@ -26,20 +34,5 @@ public class AppProps {
 
     public void setRightAnswerCount(int rightAnswerCount) {
         this.rightAnswerCount = rightAnswerCount;
-    }
-
-    public Resource getResource() {
-        if(locale.getLanguage().equals("en"))
-            return enResource;
-        else
-            return ruResource;
-    }
-
-    public void setEnResource(Resource enResource) {
-        this.enResource = enResource;
-    }
-
-    public void setRuResource(Resource ruResource) {
-        this.ruResource = ruResource;
     }
 }
