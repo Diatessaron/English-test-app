@@ -19,9 +19,8 @@ class QuestionReaderServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        final AppProps appProps = new AppProps();
-        appProps.setLocale(new Locale("en"));
-        appProps.setTemplate("%sTestQuestionsWithAnswers.csv");
+        final AppProps appProps = new AppProps(new Locale("en"),
+                3, "%sTestQuestionsWithAnswers.csv");
 
         questionReaderServiceImpl = new QuestionReaderServiceImpl(appProps);
 

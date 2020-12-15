@@ -1,6 +1,5 @@
 package ru.otus.homework.services.config;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,13 @@ import ru.otus.homework.Main;
 
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {Main.class})
 class AppPropsTest {
     @Value("${application.locale}")
     private Locale locale;
-    private Resource resource;
     @Autowired
     private AppProps appProps;
 
@@ -30,9 +28,10 @@ class AppPropsTest {
     }
 
     @Test
-    void testResource(@Value("${application.template}") String template){
-        resource = new ClassPathResource(String.format(template, locale.getLanguage()));
+    void testResource(@Value("${application.resource}") String template){
+        Resource classPathResource = new ClassPathResource
+                (String.format(template, locale.getLanguage()));
 
-        assertEquals(resource, appProps.getResource());
+        assertEquals(classPathResource, appProps.getResource());
     }
 }

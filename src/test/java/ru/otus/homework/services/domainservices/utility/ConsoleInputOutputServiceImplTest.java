@@ -18,27 +18,26 @@ class ConsoleInputOutputServiceImplTest {
     @Mock
     private PrintStream out;
 
-    private InputStream in;
     private InputOutputService inputOutputService;
+    private final String test = "Test";
 
     @BeforeEach
     void setUp() {
-        in = new ByteArrayInputStream("Test".getBytes());
+        InputStream in = new ByteArrayInputStream(test.getBytes());
         inputOutputService = new ConsoleInputOutputServiceImpl(in, out);
     }
 
     @Test
     void testPrintMethodByTimes() {
-        inputOutputService.print("Test");
+        inputOutputService.print(test);
 
-        verify(out, times(1)).println("Test");
+        verify(out, times(1)).println(test);
     }
 
     @Test
     void testReadMethodByNoSuchElementException() {
-        final String expected = "Test";
         final String actual = inputOutputService.read();
 
-        assertEquals(expected, actual);
+        assertEquals(test, actual);
     }
 }

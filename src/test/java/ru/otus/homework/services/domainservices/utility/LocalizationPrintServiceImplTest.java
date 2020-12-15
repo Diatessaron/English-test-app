@@ -6,10 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.MessageSource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.homework.Main;
-import ru.otus.homework.services.config.AppProps;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -19,25 +17,24 @@ import static org.mockito.Mockito.*;
 class LocalizationPrintServiceImplTest {
     @MockBean
     private InputOutputService inputOutputService;
+    @MockBean
+    private LocalizationService localizationService;
 
     @Autowired
-    private MessageSource messageSource;
-    @Autowired
-    private AppProps appProps;
-    private LocalizationService localizationService;
     private LocalizationPrintServiceImpl localizationPrintService;
 
     @BeforeEach
     void setUp() {
-        localizationService = new LocalizationServiceImpl(messageSource, appProps);
-        localizationPrintService = new LocalizationPrintServiceImpl(inputOutputService, localizationService);
+        when(localizationService.getMessage(null)).thenThrow(IllegalArgumentException.class);
+        when(localizationService.getMessage("")).thenThrow(IllegalArgumentException.class);
+        when(localizationService.getMessage("firstname")).thenReturn("firstnameTest");
     }
 
     @Test
     void testWithCorrectArguments() {
         localizationPrintService.printMessage("firstname");
 
-        verify(inputOutputService, times(1)).print(anyString());
+        verify(inputOutputService, times(1)).print("firstnameTest");
     }
 
     @Test

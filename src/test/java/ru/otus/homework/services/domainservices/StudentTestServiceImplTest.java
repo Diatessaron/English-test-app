@@ -10,13 +10,10 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.config.AppProps;
 import ru.otus.homework.services.domainservices.utility.InputOutputService;
 import ru.otus.homework.services.domainservices.utility.LocalizationPrintService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -31,7 +28,6 @@ class StudentTestServiceImplTest {
     private LocalizationPrintService localizationPrintService;
 
     private StudentTestService studentTestService;
-    private List<Question> questionList;
     private static final int RIGHT_ANSWER_COUNT = 3;
 
     @BeforeEach
@@ -40,15 +36,10 @@ class StudentTestServiceImplTest {
         source.setBasenames("resources/lang/labels");
         source.setUseCodeAsDefaultMessage(true);
 
-        AppProps appProps = new AppProps();
-        appProps.setLocale(Locale.US);
-
         studentTestService = new StudentTestServiceImpl(questionReaderService, inputOutputService,
                 RIGHT_ANSWER_COUNT, localizationPrintService);
 
-        questionList = new ArrayList<>();
-
-        questionList = List.of(new Question(1, "What's .... name?", List.of(
+        List<Question> questionList = List.of(new Question(1, "What's .... name?", List.of(
                 new Answer("you"), new Answer("she"),
                 new Answer("your"), new Answer("yours")
                 ), new Answer("your")),

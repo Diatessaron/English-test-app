@@ -5,37 +5,38 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.homework.Main;
 import ru.otus.homework.services.config.AppProps;
 
+import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Main.class)
 class LocalizationServiceImplTest {
-    @Autowired
-    private MessageSource messageSource;
-    @Autowired
+    @MockBean
     private AppProps appProps;
+
+    @Autowired
     private LocalizationServiceImpl localizationService;
 
     @BeforeEach
     void setUp(){
-        localizationService = new LocalizationServiceImpl(messageSource, appProps);
+        final Locale locale = new Locale("en");
+        when(appProps.getLocale()).thenReturn(locale);
     }
 
     @Test
     void testByCorrectArguments() {
         final String expected;
 
-        if(appProps.getLocale().getLanguage().equals("en"))
-            expected = "Hello! Please, enter your first name:";
-        else
-            expected = "Здравствуйте! Пожалуйста, введите Ваше имя:";
+        expected = "Hello! Please, enter your first name:";
 
         final String actual = localizationService.getMessage("firstname");
 

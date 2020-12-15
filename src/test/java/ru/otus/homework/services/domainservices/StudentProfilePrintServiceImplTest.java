@@ -1,8 +1,8 @@
 package ru.otus.homework.services.domainservices;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.homework.domain.Answer;
@@ -20,16 +20,14 @@ class StudentProfilePrintServiceImplTest {
     @MockBean
     private LocalizationPrintService localizationPrintService;
 
+    @Autowired
     private StudentProfilePrintServiceImpl studentProfilePrintService;
-
-    @BeforeEach
-    void setUp() {
-        studentProfilePrintService = new StudentProfilePrintServiceImpl(localizationPrintService);
-    }
+    private final String firstname = "firstname";
+    private final String lastname = "lastname";
 
     @Test
     void printPassedStudentResult() {
-        final StudentProfile studentProfile = new StudentProfile("firstname", "lastname");
+        final StudentProfile studentProfile = new StudentProfile(firstname, lastname);
         studentProfile.setPassed(true);
         studentProfile.setFailedQuestions(new ArrayList<>());
 
@@ -37,12 +35,12 @@ class StudentProfilePrintServiceImplTest {
 
         final InOrder inOrder = inOrder(localizationPrintService);
         inOrder.verify(localizationPrintService).printMessage
-                ("test.passed", "firstname", "lastname");
+                ("test.passed", firstname, lastname);
     }
 
     @Test
     void printFailedStudentResult(){
-        final StudentProfile studentProfile = new StudentProfile("firstname", "lastname");
+        final StudentProfile studentProfile = new StudentProfile(firstname, lastname);
         studentProfile.setPassed(false);
         studentProfile.setGivenAnswers(List.of(new Answer("AnswerContent")));
         studentProfile.setFailedQuestions(List.of(new Question(1, "Content",
@@ -52,7 +50,7 @@ class StudentProfilePrintServiceImplTest {
 
         final InOrder inOrder = inOrder(localizationPrintService);
         inOrder.verify(localizationPrintService).printMessage("test.failed",
-                "firstname", "lastname", 1);
+                firstname, lastname, 1);
         inOrder.verify(localizationPrintService).printMessage("test.mistakes");
     }
 }
