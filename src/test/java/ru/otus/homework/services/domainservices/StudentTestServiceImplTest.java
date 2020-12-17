@@ -6,12 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.applicationservices.InputOutputService;
+import ru.otus.homework.services.domainservices.utility.InputOutputService;
+import ru.otus.homework.services.domainservices.utility.LocalizationPrintService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,19 +24,22 @@ class StudentTestServiceImplTest {
     private InputOutputService inputOutputService;
     @Mock
     private QuestionReaderService questionReaderService;
+    @Mock
+    private LocalizationPrintService localizationPrintService;
 
     private StudentTestService studentTestService;
-    private List<Question> questionList;
     private static final int RIGHT_ANSWER_COUNT = 3;
 
     @BeforeEach
     void setUp() {
+        final ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+        source.setBasenames("resources/lang/labels");
+        source.setUseCodeAsDefaultMessage(true);
+
         studentTestService = new StudentTestServiceImpl(questionReaderService, inputOutputService,
-                RIGHT_ANSWER_COUNT);
+                RIGHT_ANSWER_COUNT, localizationPrintService);
 
-        questionList = new ArrayList<>();
-
-        questionList = List.of(new Question(1, "What's .... name?", List.of(
+        List<Question> questionList = List.of(new Question(1, "What's .... name?", List.of(
                 new Answer("you"), new Answer("she"),
                 new Answer("your"), new Answer("yours")
                 ), new Answer("your")),
@@ -57,6 +61,7 @@ class StudentTestServiceImplTest {
                 ), new Answer("doesn't"))
         );
 
+        doNothing().when(localizationPrintService).printMessage(any(), any());
         when(questionReaderService.getQuestions()).thenReturn(questionList);
         when(inputOutputService.read()).thenReturn("Firstname", "Lastname", "your", "from", "very", "Have you got", "doesn't");
     }
@@ -65,13 +70,13 @@ class StudentTestServiceImplTest {
     void testByOrderOfMocksMethodsInvocation() {
         studentTestService.testStudent();
 
-        final InOrder inOrder = inOrder(inputOutputService, questionReaderService);
+        final InOrder inOrder = inOrder(inputOutputService, questionReaderService, localizationPrintService);
 
         for (int i = 0; i < 2; i++) {
-            inOrder.verify(inputOutputService).print(anyString());
+            inOrder.verify(localizationPrintService).printMessage(anyString());
             inOrder.verify(inputOutputService).read();
         }
-        inOrder.verify(inputOutputService).print(anyString());
+        inOrder.verify(localizationPrintService).printMessage(anyString(), anyInt());
 
         inOrder.verify(questionReaderService).getQuestions();
 

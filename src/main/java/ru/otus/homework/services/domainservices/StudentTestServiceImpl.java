@@ -3,7 +3,8 @@ package ru.otus.homework.services.domainservices;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.applicationservices.InputOutputService;
+import ru.otus.homework.services.domainservices.utility.InputOutputService;
+import ru.otus.homework.services.domainservices.utility.LocalizationPrintService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +13,14 @@ public class StudentTestServiceImpl implements StudentTestService {
     private final QuestionReaderService questionReaderService;
     private final InputOutputService inputOutputService;
     private final int rightAnswerCount;
+    private final LocalizationPrintService localizationPrintService;
 
-    public StudentTestServiceImpl(QuestionReaderService questionReaderService,
-                                  InputOutputService inputOutputService,
-                                  int rightAnswerCount) {
+    public StudentTestServiceImpl(QuestionReaderService questionReaderService, InputOutputService inputOutputService,
+                                  int rightAnswerCount, LocalizationPrintService localizationPrintService) {
         this.questionReaderService = questionReaderService;
         this.inputOutputService = inputOutputService;
         this.rightAnswerCount = rightAnswerCount;
+        this.localizationPrintService = localizationPrintService;
     }
 
     @Override
@@ -32,6 +34,7 @@ public class StudentTestServiceImpl implements StudentTestService {
         for (Question question : questions) {
             inputOutputService.print(question.toString());
             givenAnswers.add(new Answer(inputOutputService.read()));
+
         }
 
         final List<Question> failedQuestions = checkAnswers(givenAnswers, questions);
@@ -58,17 +61,15 @@ public class StudentTestServiceImpl implements StudentTestService {
     }
 
     private StudentProfile getStudentData() {
-        inputOutputService.print("Hello! Please, enter your first name: ");
+        localizationPrintService.printMessage("firstname");
         final String firstname = inputOutputService.read();
-        inputOutputService.print("Please, enter your last name: ");
+        localizationPrintService.printMessage("lastname");
         final String lastname = inputOutputService.read();
 
         return new StudentProfile(firstname, lastname);
     }
 
     private void beginTest() {
-        inputOutputService.print("You will get questions with answers." +
-                " You have to print answer in the console. At least, %d answers should be correct\n" +
-                "English test starts", rightAnswerCount);
+        localizationPrintService.printMessage("beginTest", rightAnswerCount);
     }
 }

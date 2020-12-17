@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Answer;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.exceptions.QuestionReaderException;
+import ru.otus.homework.services.config.AppProps;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +20,8 @@ import java.util.stream.Collectors;
 public class QuestionReaderServiceImpl implements QuestionReaderService {
     private final Resource resource;
 
-    public QuestionReaderServiceImpl(@Value("${application.testQuestionsWithAnswers}") Resource resource) {
-        this.resource = resource;
+    public QuestionReaderServiceImpl(AppProps appProps) {
+        this.resource = appProps.getResource();
     }
 
     @Override

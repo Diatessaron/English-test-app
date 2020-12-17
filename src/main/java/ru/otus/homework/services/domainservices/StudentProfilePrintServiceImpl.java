@@ -3,16 +3,16 @@ package ru.otus.homework.services.domainservices;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Question;
 import ru.otus.homework.domain.StudentProfile;
-import ru.otus.homework.services.applicationservices.InputOutputService;
+import ru.otus.homework.services.domainservices.utility.LocalizationPrintService;
 
 import java.util.List;
 
 @Service
 public class StudentProfilePrintServiceImpl implements StudentProfilePrintService {
-    private final InputOutputService inputOutputService;
+    private final LocalizationPrintService localizationPrintService;
 
-    public StudentProfilePrintServiceImpl(InputOutputService inputOutputService) {
-        this.inputOutputService = inputOutputService;
+    public StudentProfilePrintServiceImpl(LocalizationPrintService localizationPrintService) {
+        this.localizationPrintService = localizationPrintService;
     }
 
     @Override
@@ -20,21 +20,18 @@ public class StudentProfilePrintServiceImpl implements StudentProfilePrintServic
         final List<Question> failedQuestions = studentProfile.getFailedQuestions();
 
         if (studentProfile.isPassed())
-            inputOutputService.print("Congratulations, %s %s! You have passed the test.",
+            localizationPrintService.printMessage("test.passed",
                     studentProfile.getFirstname(), studentProfile.getLastname());
         else
-            inputOutputService.print("Unfortunately, %s %s, you failed the test." +
-                            " You have %d incorrect answers.",
-                    studentProfile.getFirstname(), studentProfile.getLastname(), failedQuestions.size());
-
+            localizationPrintService.printMessage("test.failed", studentProfile.getFirstname(),
+                    studentProfile.getLastname(), failedQuestions.size());
 
         if (!failedQuestions.isEmpty()) {
-            inputOutputService.print("You have some mistakes. Here are they: ");
+            localizationPrintService.printMessage("test.mistakes");
             for (final Question question : failedQuestions) {
-                inputOutputService.print("Question %d:\n%s\nThe correct answer is \"%s\"\n" +
-                                "But your answer was: \"%s\"\n",
-                        question.getId(), question.getContent(), question.getCorrectAnswer(),
-                        studentProfile.getGivenAnswers().get(question.getId() - 1).toString());
+                localizationPrintService.printMessage("test.failedQuestion", question.getId(),
+                        question.getContent(), question.getCorrectAnswer(), studentProfile.getGivenAnswers()
+                                .get(question.getId() - 1).toString());
             }
         }
     }
