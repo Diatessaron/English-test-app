@@ -2,13 +2,10 @@ package ru.otus.homework.services.domainservices.utility;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.otus.homework.Main;
 import ru.otus.homework.services.config.AppProps;
 
 import java.util.Locale;
@@ -17,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = Main.class)
+@SpringBootTest
 class LocalizationServiceImplTest {
     @MockBean
     private AppProps appProps;

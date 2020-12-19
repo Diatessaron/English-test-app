@@ -10,9 +10,9 @@ import java.util.Locale;
 @ConstructorBinding
 @ConfigurationProperties(prefix = "application")
 public class AppProps {
-    private Locale locale;
-    private int rightAnswerCount;
-    private Resource resource;
+    private final Locale locale;
+    private final int rightAnswerCount;
+    private final Resource resource;
 
     public AppProps(Locale locale, int rightAnswerCount, String resource) {
         this.locale = locale;
